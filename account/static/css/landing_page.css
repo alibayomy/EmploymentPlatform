@@ -1,0 +1,36 @@
+html, body, .myContainer, .contentRow{
+    height: 100%;
+}
+.infoContainer{
+    background-color: #339999;
+    height: 100%;
+}
+.myH1{
+    color: red;
+}
+
+
+.recCard{
+    background-color: #EEE5FF;
+}
+.recCard:hover{
+    background-color: #8950FC;
+    color: white;
+
+}
+.recLink{
+    text-decoration: none;
+}
+
+
+.empCard{
+    background-color: #fff4de;
+}
+
+.empCard:hover{
+    background-color: #FFA800;
+    color: white;
+}
+.empLink, a{
+    text-decoration: none;
+}

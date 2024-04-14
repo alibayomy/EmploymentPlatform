@@ -1,6 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap5 %}
-
 {% load static %}
 {% block cssfiles %}
 <link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
@@ -26,14 +24,23 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h3 class="text-center ">Register</h3>
+                        <h3 class="text-center ">Sign In </h3>
                         <h6 class=" text-center" style="color: #B5B5C3;">Enter your email & password</h6>
                     </div>
                     <div class="col-9">
                         <div class="row">
-                            <form method="post" action="{% url 'register_employee' %}" novalidate>
+                            <form method="post" action="{% url 'my_login' %}">
                                 {%csrf_token%}
-                                {% bootstrap_form form %}    
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" name="password">
+                                  </div>
+                                 
                                   <button type="submit" class="btn text-white" style="background-color:  #339999;">Submit</button>
                             </form>
                         </div>
