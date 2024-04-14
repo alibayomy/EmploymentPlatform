@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load bootstrap5 %}
+
 {% load static %}
 {% block cssfiles %}
 <link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
@@ -20,27 +22,18 @@
                 <div class="row h-75 justify-content-center align-items-center">
                     <div class="col-12">
                         <div class="row w-100 ">
-                            <p class="text-end">Don't have an account? <a  class="text-success" href="/">Register</a></p>
+                            <p class="text-end">Already a member? <a  class="text-success" href="/accounts/login">Sign In</a></p>
                         </div>
                     </div>
                     <div class="col-12">
-                        <h3 class="text-center ">Sign In </h3>
-                        <h6 class=" text-center" style="color: #B5B5C3;">Enter your email & password</h6>
+                        <h3 class="text-center ">Register</h3>
+                        <h6 class=" text-center" style="color: #B5B5C3;">Please Register your information</h6>
                     </div>
                     <div class="col-9">
                         <div class="row">
-                            <form method="post" action="{% url 'my_login' %}">
+                            <form method="post" action="{% url 'register_employer' %}" novalidate>
                                 {%csrf_token%}
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email address</label>
-                                    <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
-                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="password">
-                                  </div>
-                                 
+                                {% bootstrap_form form %}    
                                   <button type="submit" class="btn text-white" style="background-color:  #339999;">Submit</button>
                             </form>
                         </div>

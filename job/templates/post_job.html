@@ -9,7 +9,7 @@
 {%endblock%}
 {% block content %}
 <div class="container-fluid myContainer">
-    <div class="row contentRow h-100">
+    <div class="row contentRow">
         <div class="col-lg-3 col-md-5 col-sm-12 infoContainer">
             <h3 class="text-center text-white mt-5 mb-5">ICT Recruiting Platform</h3>
             <h3 class="text-center text-white mt-5">The objective of the system is to design employment platform for SW
@@ -17,21 +17,18 @@
             <h4 class=" text-center text-white mt-5 text-opacity-50">We empower businesses to recruit specialized talent
                 faster with virtual teams of recruiters and AI job-matching technology.</h4>
         </div>
+       
         <div class="col-lg-9 col-md-7 col-sm-12">
             <div class="container ">
-                <div class="row  justify-content-center align-items-center">
+                <div class="row  justify-content-center align-items-center mt-5">
+                  
                     <div class="col-12">
-                        <div class="row w-100 ">
-                            <p class="text-end">Already a member? <a  class="text-success" href="/accounts/login">Sign In</a></p>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <h3 class="text-center ">Register</h3>
+                        <h3 class="text-center ">Posting a new job</h3>
                         <h6 class=" text-center" style="color: #B5B5C3;">Please Register your information</h6>
                     </div>
                     <div class="col-9">
                         <div class="row">
-                            <form method="post" action="{% url 'register_employee' %}" novalidate>
+                            <form method="post" action="{% url 'job-posting' %}" novalidate>
                                 {%csrf_token%}
                                 {% bootstrap_form form %}    
                                   <button type="submit" class="btn text-white" style="background-color:  #339999;">Submit</button>

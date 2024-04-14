@@ -1,11 +1,9 @@
-{% extends "base.html" %}
+{%extends "base.html" %}
 {% load static %}
 {% block cssfiles %}
 <link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
 {% endblock %}
-{% block navbar %}
-{%endblock%}
-{% block content %}
+{%block content%}
 <div class="container-fluid myContainer">
     <div class="row contentRow">
         <div class="col-lg-3 col-md-5 col-sm-12 infoContainer">
@@ -20,7 +18,7 @@
                 <div class="row h-75 justify-content-center align-items-center">
                     <div class="col-12">
                         <div class="row w-100 ">
-                            <p class="text-end">Already a member? <a  class="text-success" href="/accounts/login/">Sign In</a></p>
+                            <p class="text-end">Already a member? <a  class="text-success" href="login">Sign In</a></p>
                         </div>
                     </div>
                     <div class="col-12">
@@ -28,7 +26,7 @@
                         <h5 class=" text-center" style="color: #B5B5C3;">Choose what you want to sign up as?</h5>
                     </div>
                     <div class="col-6 ">
-                        <a href="/accounts/register/employer" class="recLink">
+                        <a href="#" class="recLink">
                             <div class="card recCard">
                                 <div class="card-header">
                                     <i class="fa-solid fa-people-line"></i>

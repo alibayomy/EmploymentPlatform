@@ -26,11 +26,13 @@ SECRET_KEY = 'django-insecure-77g5mz4*1&qvy$n$no)4-dvtj#bk05h(q56b18so0qkl&nb*^y
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'account.Employee'
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     #My Apps
     'job.apps.JobConfig',
     'account.apps.AccountConfig'
+    
 ]
 
 MIDDLEWARE = [
@@ -135,4 +138,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'account.Employee'
