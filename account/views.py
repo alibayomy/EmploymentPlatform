@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth.decorators import login_required
 from .models import Employee, Profile
 from .forms import EmployeeForm, EmployerForm
 User = get_user_model()
@@ -64,3 +65,22 @@ def my_login(request):
 def homepage(request):
     """Rendring back the hompage of the project"""
     return render(request, 'landing/landing_page.html')
+
+@login_required()
+def user_profile(request):
+    """Render the requested user profile
+    """
+    user = Profile.objects.get(employee_id=request.user.id)
+    context = {'user':user}
+    return render(request, 'account/profile.html', context)
+
+
+def employee_profile(request, id):
+    """Render the profesinal profile
+        of the employees"""
+
+    user = Employee.objects.get(id=id)
+    print(user.skills.all())
+    profile = Profile.objects.get(employee=user)
+    context = {'user':user, 'profile':profile}
+    return render(request, 'account/employee_profile.html', context)

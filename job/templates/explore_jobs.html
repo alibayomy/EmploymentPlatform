@@ -1,73 +1,48 @@
 {%extends "base.html" %}
 {% load static %}
 {% block cssfiles %}
-<link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
+<link rel="stylesheet" href="{% static 'css/explore_jobs.css' %}">
 {% endblock %}
 {%block content%}
-<div class="container-fluid myContainer">
-    <div class="row contentRow">
-        <div class="col-lg-3 col-md-5 col-sm-12 infoContainer">
-            <h3 class="text-center text-white mt-5 mb-5">ICT Recruiting Platform</h3>
-            <h3 class="text-center text-white mt-5">The objective of the system is to design employment platform for SW
-                developers</h3>
-            <h4 class=" text-center text-white mt-5 text-opacity-50">We empower businesses to recruit specialized talent
-                faster with virtual teams of recruiters and AI job-matching technology.</h4>
-        </div>
-        <div class="col-lg-9 col-md-7 col-sm-12">
-            <div class="container h-100">
-                <div class="row h-75 justify-content-center align-items-center">
-                    <div class="col-12">
-                        <div class="row w-100 ">
-                            <p class="text-end">Already a member? <a  class="text-success" href="login">Sign In</a></p>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <h3 class="text-center ">Sign Up </h3>
-                        <h5 class=" text-center" style="color: #B5B5C3;">Choose what you want to sign up as?</h5>
-                    </div>
-                    <div class="col-6 ">
-                        <a href="#" class="recLink">
-                            <div class="card recCard">
-                                <div class="card-header">
-                                    <i class="fa-solid fa-people-line"></i>
-                                    <span class="fs-4 fw-bold">
-                                        Recruiters
-                                    </span>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Looking for the top SW developers?</h5>
-                                    <p class="card-text">
-                                        I want to join the network of recruiters and find recruiting opportunities at
-                                        top employers
-                                    </p>
+<div class="container myContainer">
+    <div class="row">
+        {% for job in jobs %}
 
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6">
-                        <a href="/accounts/register/employee" class="empLink">
-                            <div class="card empCard">
-                                <div class="card-header">
-                                    <i class="fa-solid fa-user-group"></i>
-                                    <span class="fs-4 fw-bold">
-                                        Employee
-                                    </span>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Looking for a new opportunities</h5>
-                                    <p class="card-text">
-                                        I want to build my talent pipeline, or connect with the right OnDemand recruiters to help me hire quickly
-                                    </p>
-
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+        <div class="card mx-auto linkedCard">
+            <div class="row">
+                <div class="logo ml-3 mb-3">
+                    <h2>{{job.company}}</h2>
                 </div>
+                <div class="header right">{{job.location}}</div>
+            </div>
+            <div class="card-title">
+                <p class="heading">{{job.title}}&nbsp;<i class="far fa-compass"></i></p>
             </div>
 
+            <p class="text-muted">{{job.description | truncatechars:50 | default_if_none:"No description for this job"}}</p>
+            <div class="row btnrow my-4">
+                <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-success btn-sm"
+                        style="background: #00ff002b;">Full Time</button></div>
+                <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-primary btn-sm"
+                        style="background: #007bff33;">{{job.exp_level}}</button></div>
+                <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-danger btn-sm"
+                        style="background: #dc35452e;">Director</button></div>
+            </div>
+
+            <div class="mutual"><i class="fas fa-users"></i>&nbsp;&nbsp;<span>5 Friends work here</span></div>
+            <div class="row btnsubmit mt-4">
+                <div class="col-md-6 col-6">
+                    <a href="/jobs/job-details/{{job.id}}" type="button" class="btn btn-primary btn-lg"><span>Apply Now</span></a>
+                </div>
+                <div class="col-md-6 col-6">
+                    <button type="button" class="btn btn-dark btn-lg"><span>Message</span></button>
+                </div>
+            </div>
         </div>
+        {%endfor%}
     </div>
+
 </div>
+
+
 {%endblock%}

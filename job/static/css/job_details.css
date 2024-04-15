@@ -1,0 +1,14 @@
+a{
+    text-decoration: none;
+}
+
+.jobInfo{
+    color: rgb(77, 97, 130);
+    font-size: large;
+}
+.jobValue{
+    color: rgb(0, 20, 51);
+}
+.skillsPill{
+    background-color:  #D9DDE4;
+}
