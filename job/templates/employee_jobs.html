@@ -1,0 +1,51 @@
+{%extends "base.html"%}
+{%load static%}
+{%block title%}
+<title>Applied Jobs</title>
+{%endblock%}
+
+
+{%block content%}
+
+<div class="container">
+    <div class="row">
+        <!-- Job Meta data section  -->
+        {%for job in jobs%}
+        <div class="col-lg-10 col-md-10 col-sm-12">
+            <div class="col-12 mt-5 border p-5">
+                <div class="metaData col-12  ">
+                    <h2>{{job.job.title}}</h2>
+                    <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm"
+                            style="background: #EBEDF0;">Full Time</button>
+                        <button type="button" class="btn btn-outline-white btn-sm"
+                            style="background: #EBEDF0;">{{job.job.exp_level}}</button>
+                    </div>
+                    <div class="col-4 col-md-3 mt-1 mb-1">
+                        <a href="#">{{job.job.company}}</a>
+                        <span>- {{job.job.location}}</span>
+                    </div>
+                    <p>Applied on {{job.applied_on}}</p>
+                </div>
+                {% if job.status == 'Applied'%}
+                <div class="col-4 col-md-3 text-white"><button type="button" class="btn btn-outline-white btn-sm text-white"
+                    style="background: #EBEDF0;">{{job.status}}</button>
+                </div>
+                {%elif job.status == 'Viewed'%}
+                <div class="col-4 col-md-3 "><button type="button" class="btn btn-outline-white btn-sm text-white"
+                    style="background: #055ada;">{{job.status}}</button>
+                </div>
+                {% elif job.status == 'Accepted'%}
+                <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm text-white"
+                    style="background: #0ddb3a;">{{job.status}}</button>
+                </div>
+                {%else%}
+                <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm text-white"
+                    style="background: #EBEDF0;">{{job.status}}</button>
+                </div>
+                {%endif%}
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}

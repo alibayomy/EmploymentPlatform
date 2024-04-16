@@ -67,7 +67,7 @@ def logout_view(request):
     logout(request)
     return redirect("/")
 
-@login_required()
+@logout_required()
 def homepage(request):
     """Rendring back the hompage of the project"""
     return render(request, 'landing/landing_page.html')

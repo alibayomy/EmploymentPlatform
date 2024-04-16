@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 # Create your models here.
 
 
@@ -52,15 +51,6 @@ class Employee(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nat_id', 'username']
 
-
-    # def save(self, *args, **kwargs):
-    #     """Hashing the password upong saving """
-    #     if not self.is_superuser:
-    #         self.set_password(self.password)
-    #         super().save(*args, **kwargs)
-    #     else:
-    #         super().save(*args, **kwargs)
-
 class Profile(models.Model):
     """Represent the profile of each user in 
         the system"""
@@ -75,7 +65,6 @@ class Profile(models.Model):
 #Create a profile automatic when a new User register
 def create_profile(sender, instance, created, **kwargs):
     """Create a profile and save for the new users"""
-    print("The instance is ", instance)
     if created:
         user_profile = Profile(employee=instance)
         user_profile.save()

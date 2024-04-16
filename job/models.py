@@ -27,7 +27,8 @@ class EmployeeJobs(models.Model):
     STATUS = (
         ("Applied", "applied"),
         ("Not Selected", "not-selected"),
-        ("Accepted", "accepted")
+        ("Accepted", "accepted"),
+        ("Viewed", "viewed")
     )
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)

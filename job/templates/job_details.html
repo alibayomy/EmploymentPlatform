@@ -27,9 +27,16 @@
                     <p>Posted on {{job.posted_on}}</p>
                 </div>
                 <div class="col-12">
-                    <div class="col-4 d-grid mt-5"><a href="#" class="d-grid btn btn-primary">
-                            Apply For The Job
-                        </a>
+                    <div class="col-6 d-grid mt-5">
+                        <form method="post" action="{% url 'apply-to-job' %}" class="d-grid">
+                            {%csrf_token%}
+                            <input type="hidden" name="job" value={{job.id}}>
+                            <button class="btn btn-primary d-grid" type="submit">
+                                Apply For The Job
+                            </button>
+                            
+                        </form>
+                        
                     </div>
                 </div>
             </div>

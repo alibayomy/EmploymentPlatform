@@ -1,6 +1,6 @@
+{%extends "base.html"%}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{%block content%}
 
 <head>
     <meta charset="utf-8">
@@ -86,7 +86,7 @@
             <div class="col-md-5 col-xl-4">
                 <div class="card">
                     {% for skill in user.skills.all%}
-                    <a class="list-group-item list-group-item-action active"  href="/" role="tab">
+                    <a class="list-group-item list-group-item-action active border"  href="/" role="tab">
                         {{skill}}
                     </a>
                     {%endfor%}
@@ -98,7 +98,6 @@
 
     <style type="text/css">
         body {
-            margin-top: 20px;
             background: #F0F8FF;
         }
 
@@ -142,5 +141,4 @@
 
     </script>
 </body>
-
-</html>
+{%endblock%}
