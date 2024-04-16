@@ -45,30 +45,30 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <h6 for="inputUsername"><strong>Email</strong> {{user}}</h3>
+                                            <h6 for="inputUsername"><strong>Email</strong> {{myuser}}</h3>
                                         </div>
                                         <div class="form-group">
                                             <label for="phone"><strong> First Name</strong>
-                                                {{user.employee.first_name}}</label>
+                                                {{myuser.employee.first_name}}</label>
                                         </div>
                                         <div class="form-group">
                                             <label for="phone"> <strong> Last Name</strong>
-                                                {{user.employee.last_name}}</label>
+                                                {{myuser.employee.last_name}}</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="text-center">
-                                            {% if user.image %}
-                                            <img alt="{{user}}" src="{{user.image.url}}" width="128" height="128"
+                                            {% if myuser.image %}
+                                            <img alt="{{myuser}}" src="{{myuser.image.url}}" width="128" height="128"
                                                 style="border-radius: 75px;">
                                             <div class="mt-2"></div>
-                                            <strong>{{user|title}}</strong>
+                                            <strong>{{myuser|title}}</strong>
                                             {% else %}
-                                            <img alt="{{user}}" src="{% static 'images/default.png' %}" width="128"
+                                            <img alt="{{myuser}}" src="{% static 'images/default.png' %}" width="128"
                                                 height="128" style="border-radius: 75px;">
                                             <div class="mt-2"></div>
                                             {% comment %} Here will add profile icon {% endcomment %}
-                                            {% comment %} <img alt="{{user}}" src="{{user.image.url}}" width="128"
+                                            {% comment %} <img alt="{{myuser}}" src="{{myuser.image.url}}" width="128"
                                                 height="128" style="border-radius: 75px;"> {% endcomment %}
                                             {% endif %}
                                         </div>

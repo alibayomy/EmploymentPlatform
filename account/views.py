@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Employee, Profile, ViewProfile
 from .decorators import logout_required
 from .forms import EmployeeForm, EmployerForm
+from datetime import datetime
 User = get_user_model()
 # Create your views here.
 
@@ -77,7 +78,7 @@ def user_profile(request):
     """Render the requested user profile
     """
     user = Profile.objects.get(employee_id=request.user.id)
-    context = {'user':user}
+    context = {'myuser':user}
     return render(request, 'account/profile.html', context)
 
 
@@ -86,12 +87,17 @@ def employee_profile(request, id):
         of the employees"""
     
     user = Employee.objects.get(id=id)
-    # if request.user.is_authenticated and request.user != user:
-    #     ViewProfile.objects.create()
-    # elif ( request.user == user):
-    #     print("Same user")
-    # else:
-        # print("Unknown user")
     profile = Profile.objects.get(employee=user)
-    context = {'user':user, 'profile':profile}
+    if request.user.is_authenticated and request.user != user:
+        #test if the employer viewed the profile before
+        queries = ViewProfile.objects.filter(employer=request.user, profile=profile)
+        if queries:
+            for query in queries:
+                query.viewed_on = datetime.now()
+                query.save()
+        else:
+           ViewProfile.objects.create(employer=request.user, profile=profile)
+           print("New view created")
+           
+    context = {'myuser':user, 'profile':profile}
     return render(request, 'account/employee_profile.html', context)
