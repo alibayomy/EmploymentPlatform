@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import Employee, Profile
+from .models import Employee, Profile, ViewProfile
 from .decorators import logout_required
 from .forms import EmployeeForm, EmployerForm
 User = get_user_model()
@@ -84,8 +84,14 @@ def user_profile(request):
 def employee_profile(request, id):
     """Render the profesinal profile
         of the employees"""
-
+    
     user = Employee.objects.get(id=id)
+    # if request.user.is_authenticated and request.user != user:
+    #     ViewProfile.objects.create()
+    # elif ( request.user == user):
+    #     print("Same user")
+    # else:
+        # print("Unknown user")
     profile = Profile.objects.get(employee=user)
     context = {'user':user, 'profile':profile}
     return render(request, 'account/employee_profile.html', context)
