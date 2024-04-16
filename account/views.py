@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth import login, authenticate, get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from .models import Employee, Profile
+from .decorators import logout_required
 from .forms import EmployeeForm, EmployerForm
 User = get_user_model()
 # Create your views here.
@@ -24,7 +25,7 @@ def register(request):
     form = EmployeeForm()
     context = {'form': form}
     return render(request, 'account/register.html', context=context)
-
+@logout_required()
 def employer_register(request):
     """Rendring the register view to 
         handel the input data"""
@@ -44,7 +45,7 @@ def employer_register(request):
     context = {'form': form}
     return render(request, 'account/employer_register.html', context=context)
 
-
+@logout_required()
 def my_login(request):
     """Rendring the login page for the user"""
     if request.method == 'POST':
@@ -53,15 +54,20 @@ def my_login(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect("/")
+            return redirect("/accounts/profile/")
         else:
-            print("Invalid User")
             return redirect("/accounts/login")
     else:
         form = EmployeeForm()
         context = {'form': form}
         return render(request, 'account/login.html', context=context)
 
+def logout_view(request):
+    """LogOut the curent from the system"""
+    logout(request)
+    return redirect("/")
+
+@login_required()
 def homepage(request):
     """Rendring back the hompage of the project"""
     return render(request, 'landing/landing_page.html')
