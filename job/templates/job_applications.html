@@ -1,0 +1,41 @@
+{%extends "base.html"%}
+{%load static%}
+{%block title%}
+<title>Applied Jobs</title>
+{%endblock%}
+
+
+{%block content%}
+
+<div class="container">
+    <div class="row">
+        <!-- Job Meta data section  -->
+        {%for employee in employees%}
+        <a href="/accounts/employee-profile/{{employee.id}}/" style="text-decoration: none;">
+        <div class="col-lg-10 col-md-10 col-sm-12">
+            <div class="col-12 mt-3 border p-5 mb-3">
+                <div class="metaData col-12  ">
+                    <h2>{{employee.first_name}} {{employee.last_name}}</h2>
+                    <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm"
+                            style="background: #EBEDF0;">Full Time</button>
+                        <button type="button" class="btn btn-outline-white btn-sm"
+                            style="background: #EBEDF0;">{{employee.exp_level}}</button>
+                    </div>
+                    <div class="col-4 col-md-3 mt-1 mb-1">
+                        <a href="#">{{employee.company}}</a>
+                        <span>- {{employee.location}}</span>
+                    </div>
+                    <p>Applied on {{employee.applied_on}}</p>
+                </div>
+               <div class="applInfo col-3">
+                <span class="fs-5">{{employee.application_number}}</span>
+                <span>Applied for this postion</span>
+                <a href="/jobs/job-applications/{{job.id}}/"><p>View all applications</p></a>
+               </div>
+            </div>
+        </div>
+        </a>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}

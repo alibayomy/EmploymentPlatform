@@ -86,7 +86,6 @@ def employee_profile(request, id):
         of the employees"""
 
     user = Employee.objects.get(id=id)
-    print(user.skills.all())
     profile = Profile.objects.get(employee=user)
     context = {'user':user, 'profile':profile}
     return render(request, 'account/employee_profile.html', context)

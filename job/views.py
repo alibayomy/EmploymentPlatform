@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
-from .forms import JobForm
-from .models import Job, EmployeeJobs
+from itertools import chain
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.db.models import Count
+from account.models import Skills, Employee
+from .models import Job, EmployeeJobs
+from .forms import JobForm
 from django import template
 # Create your views here.
 
@@ -42,16 +45,28 @@ def recommended_jobs(request):
     """Get the jobs that matches the 
         user Skills and biography"""
     user = request.user
-    ## ==> code to be written here
-    pass
+    user_skills= user.skills.all()
+    bio = user.biography.split()
+    user_skills_bio = Skills.objects.filter(name__in=bio)
+    user_skills_all = chain(user_skills, user_skills_bio)
+    jobs_related_by_skills = Job.objects.filter(skills_required__in=user_skills_all).distinct()
+
+    context={'jobs':jobs_related_by_skills}
+    return render(request, 'recommended_jobs.html', context)
 
 @login_required()
-def job_details(request, id):
+def job_details(request, job_id):
     """Get the job details out of database based
         on the job_id"""
 
-    job = Job.objects.get(id=id)
-    context = {"job": job}
+    try:
+        EmployeeJobs.objects.get(job_id=job_id, employee_id=request.user.id)
+        flag = 1
+    except:
+        flag=0
+    
+    job = Job.objects.get(id=job_id)
+    context = {"job": job, 'flag':flag}
     return render(request, "job_details.html", context)
 
 @login_required()
@@ -68,6 +83,22 @@ def apply_to_job(request):
 def get_employee_jobs(request):
     """Render a page that returns all
     the jobs the Employee applied for"""
-    jobs = EmployeeJobs.objects.filter(employee_id = request.user.id) 
-    context = {'jobs':jobs}
+    if (request.user.is_employer):
+        jobs = Job.objects.filter(employer_id= request.user.id).annotate(application_number=Count("employeejobs"))           
+        context = {'jobs': jobs}
+        return render(request, 'employer_jobs.html', context)
+    else:
+        jobs = EmployeeJobs.objects.filter(employee_id = request.user.id) 
+        context = {'jobs':jobs}
     return render(request, 'employee_jobs.html', context)
+
+@login_required()
+def get_job_applications(request, job_id):
+    """Render back all the job applications"""
+
+    job = Job.objects.get(id=job_id)
+    if request.user == job.employer:
+        emp_job = EmployeeJobs.objects.filter(job_id=job_id)
+        employee = Employee.objects.filter(id__in=emp_job.values("employee_id"))
+        context = {'employees':employee}
+        return render(request, 'job_applications.html', context)

@@ -61,6 +61,13 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return (self.employee.email)
 
+class ViewProfile(models.Model):
+    """Save who viewed the employee professional profile
+    """
+    employer = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    Profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    viewed_on = models.DateField(auto_now_add=True)
+
 
 #Create a profile automatic when a new User register
 def create_profile(sender, instance, created, **kwargs):

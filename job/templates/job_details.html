@@ -28,15 +28,22 @@
                 </div>
                 <div class="col-12">
                     <div class="col-6 d-grid mt-5">
+                        {% if flag == 0%}
                         <form method="post" action="{% url 'apply-to-job' %}" class="d-grid">
                             {%csrf_token%}
                             <input type="hidden" name="job" value={{job.id}}>
                             <button class="btn btn-primary d-grid" type="submit">
                                 Apply For The Job
                             </button>
-                            
+                            {% for job in user.employeejobs.all %}
+                                <h1>{{job}}</h1>
+                                {%endfor%}
                         </form>
-                        
+                        {%else%}
+                        <button class="btn btn-success d-grid" disabled>
+                            Applied
+                        </button>
+                        {%endif%}
                     </div>
                 </div>
             </div>

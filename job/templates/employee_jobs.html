@@ -11,6 +11,7 @@
     <div class="row">
         <!-- Job Meta data section  -->
         {%for job in jobs%}
+        <a href="/jobs/job-details/{{job.id}}/" style="text-decoration: none;">
         <div class="col-lg-10 col-md-10 col-sm-12">
             <div class="col-12 mt-5 border p-5">
                 <div class="metaData col-12  ">
@@ -45,6 +46,7 @@
                 {%endif%}
             </div>
         </div>
+        </a>
         {%endfor%}
     </div>
 </div>

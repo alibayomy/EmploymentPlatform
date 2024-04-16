@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import UniqueConstraint
 from account.models import Employee, Skills
 # Create your models here.
 
@@ -34,4 +35,11 @@ class EmployeeJobs(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, choices=STATUS, default="applied")
     applied_on = models.DateField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.job.title} {self.employee}"
+    class Meta:
+        """Adding a unique constraint to prevent
+        the employee from applying to the job more the once"""
+        unique_together  = ('employee', 'job')
 
