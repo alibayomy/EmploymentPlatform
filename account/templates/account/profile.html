@@ -11,6 +11,7 @@
             <div class="col-md-5 col-xl-4">
 
                 <div class="list-group list-group-flush" role="tablist">
+                    {% if user.is_employer%}
                     <a class="list-group-item list-group-item-action " href="/" role="tab">
                         Home
                     </a>
@@ -18,19 +19,29 @@
                     <a class="list-group-item list-group-item-action" href="/jobs/employee-jobs/" role="tab">
                         Your Jobs
                     </a>
-                    <a class="list-group-item list-group-item-action" role="tab">
-                        Edit Profile
+                        <a href="/jobs/job-posting" class="list-group-item list-group-item-action" role="tab">
+                            Post A Job
+                        </a>
+                        <a class="list-group-item list-group-item-action" role="tab" href="/accounts/logout/">
+                            Log Out
+                        </a>
+                    {%else%}
+                    <a class="list-group-item list-group-item-action " href="/" role="tab">
+                        Home
                     </a>
-                    <a class="list-group-item list-group-item-action" role="tab">
-                        Change Password
+                    <a class="list-group-item list-group-item-action" href="/jobs/employee-jobs/" role="tab">
+                        Your Job Applications
                     </a>
-                    <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#exampleModal"
-                        href="" role="tab">
-                        Delete Profile
+                    <a href="/accounts/employee-profile/{{user.id}}" class="list-group-item list-group-item-action" role="tab">
+                        Your Professinal Profile
                     </a>
                     <a class="list-group-item list-group-item-action" role="tab" href="/accounts/logout/">
                         Log Out
                     </a>
+                    {%endif%}
+                   
+                  
+                   
                 </div>
             </div>
             <div class="col-md-7 col-xl-8">

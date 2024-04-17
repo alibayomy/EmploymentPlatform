@@ -1,8 +1,8 @@
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.db.models import Count, Subquery
-from account.models import Skills, Employee
+from django.db.models import Count, Subquery ,Q
+from account.models import Skills, Employee, Profile
 from .models import Job, EmployeeJobs
 from .forms import JobForm
 from django import template
@@ -37,9 +37,12 @@ def post_jobs(request):
 def explore_jobs(request):
     """Get all the jobs out of database
         then render back to the employee"""
-    jobs = Job.objects.all()
-    context = {"jobs" :jobs}
-    return render(request, 'explore_jobs.html', context)
+    if not request.user.is_employer:
+        jobs = Job.objects.all()
+        context = {"jobs" :jobs}
+        return render(request, 'explore_jobs.html', context)
+    return render(request, 'error_page.html')
+
 
 @login_required()
 def recommended_jobs(request):
@@ -96,12 +99,10 @@ def get_employee_jobs(request):
 @login_required()
 def get_job_applications(request, job_id):
     """Render back all the job applications"""
-
     job = Job.objects.get(id=job_id)
     if request.user == job.employer:
 
         if request.method == 'POST':
-            print(request.POST)
             employee_id = request.POST['employee']
             application = EmployeeJobs.objects.get(job=job, employee_id=employee_id)
 
@@ -114,11 +115,81 @@ def get_job_applications(request, job_id):
                 application.save()
             return redirect('/accounts/profile/')
         else:
+            #Method = GET
+           
+           
             emp_job = EmployeeJobs.objects.filter(job_id=job_id)
+            job_skills = job.skills_required.all()
+            job_skills_lst = []
+            for skill in job_skills:
+                job_skills_lst.append(str(skill))
+            print(job_skills_lst)
+            job_location = job.location.split()
             employees = Employee.objects.filter(id__in=emp_job.values("employee_id"))
+            filter_values = {'All': employees,
+                             'Skills':employees.filter(skills__in=job_skills).distinct() , 
+                             'City':employees.filter(city__in=job_location).distinct(), 
+                             'Exp':employees.filter(exp_level__in=job.exp_level).distinct(), 
+                             'Bio':0}
+            
+            search_param = request.GET.get('filter')
+            if(search_param == 'Bio'):
+                matched_emp_ids = []
+                for employee in employees:
+                # Check which part of the biography matched
+                    for skill in job_skills_lst:
+                        if employee.biography.__contains__(skill):
+                            matched_emp_ids.append(employee.id)
+                employees = Employee.objects.filter(id__in=matched_emp_ids)
+                print(employees)
+            else:
+                for key, value in filter_values.items():
+                    if (search_param == key):
+                        employees= value
+                        break
+                else:
+                    pass
+            
             for employee in employees:
                 employee.applied_date = EmployeeJobs.objects.filter(employee=employee, job_id=job_id).values("applied_on").first()['applied_on']
                 employee.application_status = EmployeeJobs.objects.filter(employee=employee, job_id=job_id).values("status").first()['status']
-            context = {'employees':employees, 'job': job}
+                
+            context = {'employees':employees, 'job': job, 'search_param':search_param, 'filter_values':filter_values}
             return render(request, 'job_applications.html', context)
-    
+    else:
+        return render(request, 'error_page.html')
+        
+
+@login_required()
+def filter_job_applications(request, query):
+    """Filter the job applications based on 
+        the given filter query"""
+    pass
+
+
+@login_required()
+def search_view(request):
+
+    search_query = request.GET.get('search')
+    if request.user.is_employer:
+        employees = Employee.objects.filter(is_employer=False).filter(Q(first_name__contains=search_query) | Q(last_name__contains=search_query) | Q(email__contains=search_query))
+        profiles = Profile.objects.filter(employee__in=employees)
+        context = {"profiles" : profiles}
+        return render(request, 'employer_search_page.html', context=context)
+
+    else:
+        jobs = Job.objects.filter(Q(company__contains=search_query))
+        context = {"jobs":jobs}
+        return render(request, 'employee_search_page.html', context=context)
+
+
+@login_required()
+def get_employees_profiles(request):
+    """Render all the profiles for the employer"""
+
+    if request.user.is_employer:
+        profiles = Profile.objects.filter(employee__is_employer = False)
+        for profile in profiles:
+            print(profile.employee.first_name)
+        context = {"profiles": profiles}
+    return render(request, 'employer_profiles.html', context=context)

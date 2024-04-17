@@ -11,7 +11,7 @@
     <div class="row">
         <!-- Job Meta data section  -->
         {%for job in jobs%}
-        <a href="/jobs/job-details/{{job.id}}/" style="text-decoration: none;">
+        <a href="/jobs/job-applications/{{job.id}}/" style="text-decoration: none;">
         <div class="col-lg-10 col-md-10 col-sm-12">
             <div class="col-12 mt-3 border p-5 mb-3">
                 <div class="metaData col-12  ">
@@ -25,9 +25,8 @@
                         <a href="#">{{job.company}}</a>
                         <span>- {{job.location}}</span>
                     </div>
-                    <p>Applied on {{job.applied_on}}</p>
                 </div>
-               <div class="applInfo col-3">
+               <div class="applInfo col-3 mt-5">
                 <span class="fs-5">{{job.application_number}}</span>
                 <span>Applied for this postion</span>
                 <a href="/jobs/job-applications/{{job.id}}/"><p>View all applications</p></a>

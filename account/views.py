@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, get_user_model, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from .models import Employee, Profile, ViewProfile
 from .decorators import logout_required
 from .forms import EmployeeForm, EmployerForm
@@ -88,6 +89,10 @@ def employee_profile(request, id):
     
     user = Employee.objects.get(id=id)
     profile = Profile.objects.get(employee=user)
+    if request.user == user:
+        profile_views = ViewProfile.objects.filter(profile=profile).count()
+    else:
+        profile_views = None
     if request.user.is_authenticated and request.user != user:
         #test if the employer viewed the profile before
         queries = ViewProfile.objects.filter(employer=request.user, profile=profile)
@@ -99,5 +104,5 @@ def employee_profile(request, id):
            ViewProfile.objects.create(employer=request.user, profile=profile)
            print("New view created")
            
-    context = {'myuser':user, 'profile':profile}
+    context = {'myuser':user, 'profile':profile, "views":profile_views}
     return render(request, 'account/employee_profile.html', context)

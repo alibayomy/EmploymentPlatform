@@ -1,0 +1,95 @@
+{%extends "base.html"%}
+{%load static%}
+{%block title%}
+<title>Applied Jobs</title>
+{%endblock%}
+
+
+{%block content%}
+{%for profile in profiles%}
+
+<div class="container">
+    <div class="row">
+        <!-- Job Meta data section  -->
+        <a href="/accounts/employee-profile/{{profile.employee.id}}/" style="text-decoration: none; color: inherit;">
+            <div class="col-lg-10 col-md-10 col-sm-12">
+                <div class="col-12 mt-3 border p-5 mb-3">
+                    <div class="metaData col-12  ">
+                        <h4>{{profile.employee.first_name}} {{profile.employee.last_name}}</h4>
+                        <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm"
+                                style="background: #EBEDF0;">{{profile.employee.city}}</button>
+                            <button type="button" class="btn btn-outline-white btn-sm"
+                                style="background: #EBEDF0;">{{profile.employee.exp_level}}</button>
+                        </div>
+                        <div class="col-12 col-md-12 mt-1 mb-1 text-end">
+                            <span>- {{profile.employee.location}}</span>
+                        </div>
+                        <p>Email :{{profile.employee.email}}</p>
+                    </div>
+                    <div class="col-12 skillsContainer mt-5  ">
+                        <h4 style="color: rgb(77, 97, 130);">Applicant Skills:</h4>
+                        <div class="col-10 mt-3">
+                            {% for skill in profile.employee.skills.all %}
+                            <div class=" border rounded-pill pe-1 ps-1 me-1 mt-5 skillsPill d-inline ">
+                                <span>
+                                    {{skill.name}}
+                                </span>
+                                
+                                </div>
+
+                                {%endfor%}
+                            </div>
+
+                        </div>
+                        <div class="col-12 mt-5 container">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <h4 style="color: rgb(77, 97, 130);">Biography</h4>
+                                    <p>{{profile.employee.biography| truncatechars:50 | default_if_none:"No bio for this employee"}}</p>
+                                    <a href="/accounts/employee-profile/{{employee.id}}/"
+                                        style="text-decoration: none;">
+                                        Profile </a>
+                                </div>
+                                {%if employee.application_status in 'viewed' %}
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+                                    <form method="post" action="{% url 'job-applications' job.id%}">
+                                        {%csrf_token%}
+                                        <input type="hidden" name="employee" value="{{employee.id}}">
+                                        <input type="hidden" name="job" value="{{job.id}}">
+                                        <button type="submit" class="btn btn-outline-success me-5" name="button"
+                                            value="accepted">Accept</button>
+                                        <button type="submit" class="btn btn-outline-danger" name="button"
+                                            value="rejected">Reject</button>
+                                    </form>
+                                    {%elif employee.application_status in 'accepted' %}
+                                    <div class="col-lg-6 col-md-6 col-sm-12 text-end ">
+                                        <button
+                                            class=" btn  btn-success  fs-5">{{employee.application_status|title}}</button>
+                                    </div>
+                                    {%else %}
+                                    <div class="col-lg-6 col-md-6 col-sm-12 text-end ">
+                                        <button
+                                            class=" btn  btn-secondary  fs-5">{{employee.application_status|title}}</button>
+                                    </div>
+                                    {%endif%}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+        </a>
+
+    </div>
+</div>
+{%endfor%}
+
+{%endblock%}
+{%block jsfiles%}
+<script src="{% static 'js/job_application.js' %}"></script>
+
+{%endblock%}

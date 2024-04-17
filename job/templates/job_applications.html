@@ -6,7 +6,26 @@
 
 
 {%block content%}
-
+<div class="container">
+    <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-4 border-end">
+                <h4 class="fw-bold">Applications ({{employees.count}})</h4>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 ms-5">
+                <h5>Filter Applications By</h5>
+                <select class="form-select" aria-label="Default select example" onchange="filterApplications()" id="filterID">
+                    {%for value in filter_values%}
+                    {%if search_param in value%}
+                        <option value={{value}} selected>{{value}}</option>
+                    {%else%}
+                        <option value={{value}} >{{value}}</option>
+                    {%endif%}
+                    {%endfor%}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <!-- Job Meta data section  -->
@@ -15,14 +34,13 @@
             <div class="col-lg-10 col-md-10 col-sm-12">
                 <div class="col-12 mt-3 border p-5 mb-3">
                     <div class="metaData col-12  ">
-                        <h2>{{employee.first_name}} {{employee.last_name}}</h2>
+                        <h4>{{employee.first_name}} {{employee.last_name}}</h4>
                         <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm"
                                 style="background: #EBEDF0;">{{employee.city}}</button>
                             <button type="button" class="btn btn-outline-white btn-sm"
                                 style="background: #EBEDF0;">{{employee.exp_level}}</button>
                         </div>
                         <div class="col-12 col-md-12 mt-1 mb-1 text-end">
-
                             <span>- {{employee.location}}</span>
                         </div>
                         <p>Applied on {{employee.applied_date}}</p>
@@ -32,13 +50,13 @@
                         <div class="col-10 mt-3">
                             {% for skill in employee.skills.all %}
                             {% if skill in job.skills_required.all %}
-                            <div class=" border rounded-pill pe-1 ps-1 me-1 mt-5 skillsPill d-inline ">
-                                <span>
-                                    {{skill.name}}
-                                </span>
-                                {%else%}
-                                <div class=" rounded-pill pe-1 ps-1 me-1 mt-5 skillsPill d-inline  ">
+                            <div class=" rounded-pill pe-1 ps-1 me-1 mt-5 skillsPill d-inline  ">
                                     <i class="fa-solid fa-check" style="color: #63E6BE;"></i>
+                                    <span>
+                                        {{skill.name}}
+                                    </span>
+                                {%else%}
+                                <div class=" border rounded-pill pe-1 ps-1 me-1 mt-5 skillsPill d-inline ">
                                     <span>
                                         {{skill.name}}
                                     </span>
@@ -58,7 +76,7 @@
                                         style="text-decoration: none;">
                                         Profile </a>
                                 </div>
-                                {%if employee.application_status in 'viewed' %}
+                                {%if employee.application_status in 'viewed' or  employee.application_status in 'applied' %}
 
                                 <div class="col-lg-6 col-md-6 col-sm-12 text-end">
                                     <form method="post" action="{% url 'job-applications' job.id%}">
@@ -92,4 +110,8 @@
         {%endfor%}
     </div>
 </div>
+{%endblock%}
+{%block jsfiles%}
+<script src="{% static 'js/job_application.js' %}"></script>
+
 {%endblock%}
