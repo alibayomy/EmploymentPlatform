@@ -33,9 +33,9 @@ class Employee(AbstractUser):
     Nat_id: primary key and the unique value
     """
     EXP_LEVEL = (
-        ("J", "Junior"),
-        ("M", "Mid"),
-        ("S", "Senior")
+        ("Junior", "Junior"),
+        ("Mid", "Mid"),
+        ("Senior", "Senior")
     )
     nat_id = models.CharField(max_length=14, unique=True,
                                             validators=[validate_nat_id])
@@ -66,7 +66,7 @@ class ViewProfile(models.Model):
     """
     employer = models.ForeignKey(Employee, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    viewed_on = models.DateField(auto_now_add=True)
+    viewed_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('employer', 'profile')

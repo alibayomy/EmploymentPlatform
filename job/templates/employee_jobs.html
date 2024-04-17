@@ -27,21 +27,21 @@
                     </div>
                     <p>Applied on {{job.applied_on}}</p>
                 </div>
-                {% if job.status == 'Applied'%}
+                {% if job.status == 'applied'%}
                 <div class="col-4 col-md-3 text-white"><button type="button" class="btn btn-outline-white btn-sm text-white"
-                    style="background: #EBEDF0;">{{job.status}}</button>
+                    style="background: #EBEDF0;">{{job.status|title}}</button>
                 </div>
-                {%elif job.status == 'Viewed'%}
+                {%elif job.status == 'viewed'%}
                 <div class="col-4 col-md-3 "><button type="button" class="btn btn-outline-white btn-sm text-white"
-                    style="background: #055ada;">{{job.status}}</button>
+                    style="background: #055ada;">{{job.status|title}}</button>
                 </div>
-                {% elif job.status == 'Accepted'%}
+                {% elif job.status in 'accepted'%}
                 <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm text-white"
-                    style="background: #0ddb3a;">{{job.status}}</button>
+                    style="background: #0ddb3a;">{{job.status|title}}</button>
                 </div>
                 {%else%}
                 <div class="col-4 col-md-3"><button type="button" class="btn btn-outline-white btn-sm text-white"
-                    style="background: #EBEDF0;">{{job.status}}</button>
+                    style="background: #EBEDF0;">{{job.status|title}}</button>
                 </div>
                 {%endif%}
             </div>

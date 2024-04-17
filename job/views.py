@@ -1,11 +1,12 @@
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.db.models import Count
+from django.db.models import Count, Subquery
 from account.models import Skills, Employee
 from .models import Job, EmployeeJobs
 from .forms import JobForm
 from django import template
+from datetime import datetime
 # Create your views here.
 
 
@@ -98,7 +99,26 @@ def get_job_applications(request, job_id):
 
     job = Job.objects.get(id=job_id)
     if request.user == job.employer:
-        emp_job = EmployeeJobs.objects.filter(job_id=job_id)
-        employee = Employee.objects.filter(id__in=emp_job.values("employee_id"))
-        context = {'employees':employee}
-        return render(request, 'job_applications.html', context)
+
+        if request.method == 'POST':
+            print(request.POST)
+            employee_id = request.POST['employee']
+            application = EmployeeJobs.objects.get(job=job, employee_id=employee_id)
+
+            if request.POST['button'] == 'accepted':
+                application.status = "accepted"
+                application.save()
+
+            else:
+                application.status = "not-selected"
+                application.save()
+            return redirect('/accounts/profile/')
+        else:
+            emp_job = EmployeeJobs.objects.filter(job_id=job_id)
+            employees = Employee.objects.filter(id__in=emp_job.values("employee_id"))
+            for employee in employees:
+                employee.applied_date = EmployeeJobs.objects.filter(employee=employee, job_id=job_id).values("applied_on").first()['applied_on']
+                employee.application_status = EmployeeJobs.objects.filter(employee=employee, job_id=job_id).values("status").first()['status']
+            context = {'employees':employees, 'job': job}
+            return render(request, 'job_applications.html', context)
+    

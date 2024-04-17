@@ -24,7 +24,7 @@ class EmployerForm(ModelForm):
     """
     class Meta:
         model = Employee
-        fields = ['nat_id', 'first_name', 'last_name', 'email', 'password']
+        fields = ['nat_id', 'first_name', 'last_name', 'email', 'password',]
         
         widgets = {
             'password' : forms.PasswordInput
