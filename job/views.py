@@ -192,4 +192,6 @@ def get_employees_profiles(request):
         for profile in profiles:
             print(profile.employee.first_name)
         context = {"profiles": profiles}
-    return render(request, 'employer_profiles.html', context=context)
+        return render(request, 'employer_profiles.html', context=context)
+    else:
+        return render(request, 'error_page.html')

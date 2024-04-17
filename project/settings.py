@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     #My Apps
     'job.apps.JobConfig',
     'account.apps.AccountConfig'
+
+    #For dummy data
     
 ]
+#for dummy data
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
