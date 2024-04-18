@@ -15,7 +15,7 @@ class Job(models.Model):
         ("Senior", "Senior")
     )
     employer = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    company = models.CharField(max_length=50, default="Intlaq")
+    company = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     description = models.TextField()
     location = models.CharField(max_length=50)

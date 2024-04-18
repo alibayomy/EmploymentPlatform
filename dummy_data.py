@@ -3,6 +3,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 django.setup()
 from faker import Faker
 from account.models import Employee, Skills
+from job.models import Job
 import random
 
 
@@ -57,6 +58,9 @@ for skill_name in skills_tuple:
         print(f"Created skill: {skill_name}")
     else:
         print(f"Skill already exists: {skill_name}")
+
+
+
 def genrate_employees(num):
     for _ in range(num):
         employee =  Employee.objects.create(
@@ -71,10 +75,31 @@ def genrate_employees(num):
             password = "123"
         )
          # Generate a list of random skills for the employee
-        num_skills = fake.random_int(min=1, max=50)  # Generate a random number of skills (between 1 and 5)
+        num_skills = fake.random_int(min=1, max=41)  
         employee_skills_names = fake.random_elements(elements=skills_tuple, unique=True, length=num_skills)
         employee_skills = [Skills.objects.get_or_create(name=name)[0] for name in employee_skills_names]
         # Assign the generated skills to the employee
         employee.skills.add(*employee_skills)
         employee.save()
-genrate_employees(20)
+# genrate_employees(50)
+
+
+def genrate_jobs(num):
+    for _ in range(num):
+        job =  Job.objects.create(
+            employer = Employee.objects.get(email="rec@alico.com"),
+            company=fake.company(),
+            title=fake.job(),
+            description=fake.text(),
+            location=fake.city(),
+            exp_level=random.choice(['Junior', 'Mid', 'Senior']),
+            posted_on=fake.date_this_year(),
+        )
+         # Generate a list of random skills for the employee
+        num_skills = fake.random_int(min=1, max=41)  
+        job_skills_names = fake.random_elements(elements=skills_tuple, unique=True, length=num_skills)
+        job_skills = [Skills.objects.get_or_create(name=name)[0] for name in job_skills_names]
+        # Assign the generated skills to the employee
+        job.skills_required.add(*job_skills)
+        job.save()
+genrate_jobs(20)
